@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>For Nutty 💕</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:#5a2940}
+body{min-height:100svh;height:100svh;overflow:hidden;background:radial-gradient(circle at 50% 0,#5b1739 0,#260b1c 52%,#080308 100%);display:flex;align-items:center;justify-content:center;padding:0;position:relative}
+.card{width:100vw;max-width:620px;min-height:100svh;height:100svh;border:1px solid rgba(196,54,112,.12);border-radius:30px;background:rgba(255,255,255,.93);box-shadow:0 24px 70px rgba(135,35,79,.18);text-align:center;padding:clamp(22px,5vh,48px) 18px 22px;position:relative;overflow:visible;display:flex;flex-direction:column;justify-content:center}
+.heart{font-size:38px;line-height:1;margin-bottom:7px;color:#c52f6d}
+h1{margin:0 0 15px;font-size:clamp(29px,7.5vw,42px);line-height:1.08}
+.details{font-size:17px;line-height:1.5;margin-bottom:12px}
+.interactive-zone{position:relative;margin-top:8px;height:clamp(380px,54svh,540px);flex:none}
+.message{font-size:17px;line-height:1.42;margin:0 auto 15px}
+.question{font-size:23px;font-weight:800;margin-bottom:12px;color:#8f2456}
+.play-area{position:absolute;left:-2px;right:-2px;top:0;bottom:0;height:auto;overflow:visible;z-index:20;pointer-events:none}
+.play-area button{pointer-events:auto}
+.chase-area{position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;z-index:1}
+button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+#yes{position:absolute;top:0;left:50%;transform:translateX(-50%);width:max-content;max-width:calc(100% - 24px);height:48px;border:0;border-radius:999px;background:linear-gradient(135deg,#ff4f93,#d91f68);color:#fff;font-size:15px;font-weight:900;padding:0 20px;box-shadow:0 8px 24px rgba(217,31,104,.30),0 0 0 0 rgba(255,79,147,.32);z-index:5;white-space:nowrap;animation:yesPulse 1.45s ease-in-out infinite}
+#no{position:absolute;top:0px;left:50%;transform:translateX(-50%);height:42px;width:max-content;max-width:calc(100% - 20px);border:2px solid #d45a87;border-radius:999px;background:#fff;color:#9d285b;font-size:14px;font-weight:800;padding:0 14px;white-space:nowrap;z-index:10;box-shadow:0 6px 18px rgba(140,36,80,.14)}
+#no.moving{transform:none;transition:left .38s cubic-bezier(.18,.82,.24,1),top .38s cubic-bezier(.18,.82,.24,1);will-change:left,top,transform;animation:noIdlePulse 1.05s ease-in-out infinite}
+#no.below-pop{animation:belowPop .28s ease-out both}
+#no.idle-float{transition:left .58s cubic-bezier(.22,.8,.28,1),top .58s cubic-bezier(.22,.8,.28,1),transform .58s cubic-bezier(.22,.8,.28,1);animation:noFloat 1.05s ease-in-out infinite}
+@keyframes noFloat{0%,100%{margin-top:0;transform:scale(1) rotate(0deg);filter:drop-shadow(0 5px 8px rgba(255,105,180,.10))}35%{transform:scale(1.045) rotate(-1deg);filter:drop-shadow(0 10px 14px rgba(255,105,180,.24))}70%{transform:scale(1.02) rotate(1deg);filter:drop-shadow(0 8px 12px rgba(255,105,180,.20))}}
+@keyframes noIdlePulse{0%,100%{filter:drop-shadow(0 5px 8px rgba(255,105,180,.10));}50%{filter:drop-shadow(0 10px 16px rgba(255,105,180,.28));}}
+@keyframes belowPop{0%{transform:translateX(-50%) scale(.78);opacity:.55}60%{transform:translateX(-50%) scale(1.08);opacity:1}100%{transform:translateX(-50%) scale(1);opacity:1}}
+#no.final-yes{border:0;background:#fff;color:#a11d59;font-size:15px;font-weight:900;box-shadow:0 10px 28px rgba(255,255,255,.22);z-index:20}.finalPop{animation:finalPop .35s ease-out both}
+.pop{animation:pop .28s ease-out both}
+@keyframes pop{0%{transform:scale(.78);opacity:.35;filter:blur(1px);box-shadow:0 2px 8px rgba(140,36,80,.08)}55%{transform:scale(1.13);opacity:1;filter:blur(0);box-shadow:0 12px 30px rgba(217,31,104,.24)}100%{transform:scale(1);opacity:1;filter:blur(0);box-shadow:0 6px 18px rgba(140,36,80,.14)}}
+#no.blast{animation:noBlast .55s cubic-bezier(.2,.75,.25,1) forwards!important;pointer-events:none}
+@keyframes noBlast{0%{opacity:1;transform:scale(1) rotate(0deg);filter:blur(0)}35%{opacity:.95;transform:scale(1.16) rotate(-3deg);filter:blur(.3px)}70%{opacity:.38;transform:scale(1.42) rotate(4deg);filter:blur(2px)}100%{opacity:0;transform:scale(1.72) rotate(8deg);filter:blur(5px)}}
+#no.reappear{animation:noReappear .42s cubic-bezier(.18,.9,.3,1.2) both!important}
+@keyframes noReappear{0%{opacity:0;transform:scale(.2);filter:blur(5px)}55%{opacity:1;transform:scale(1.16);filter:blur(0)}100%{opacity:1;transform:scale(1);filter:blur(0)}}
+@keyframes yesPulse{0%,100%{box-shadow:0 8px 24px rgba(217,31,104,.28),0 0 0 0 rgba(255,79,147,.22);transform:translateX(-50%) scale(1)}50%{box-shadow:0 12px 32px rgba(217,31,104,.42),0 0 0 9px rgba(255,79,147,.08);transform:translateX(-50%) scale(1.07)}}
+  50%{box-shadow:0 10px 30px rgba(255,255,255,.34);transform:translateX(-50%) scale(1.035)}
+}
+@keyframes finalPop{0%{transform:scale(.78);opacity:.3}65%{transform:scale(1.08);opacity:1}100%{transform:scale(1);opacity:1}}
+#no.final-yes{transform-style:preserve-3d;backface-visibility:hidden}
+#no.final-yes.flip{animation:finalFlip .62s cubic-bezier(.2,.75,.25,1) both!important}
+@keyframes finalFlip{0%{transform:perspective(500px) rotateX(0deg) scale(1);opacity:1}38%{transform:perspective(500px) rotateX(75deg) scale(1.06);opacity:.92}50%{transform:perspective(500px) rotateX(90deg) scale(1.1);opacity:.2}62%{transform:perspective(500px) rotateX(105deg) scale(1.1);opacity:.2}100%{transform:perspective(500px) rotateX(0deg) scale(1.08);opacity:1}}
+#no.final-yes.caught{background:linear-gradient(135deg,#ff4f93,#d91f68);color:#fff;box-shadow:0 12px 34px rgba(217,31,104,.45),0 0 0 8px rgba(255,79,147,.08);animation:yesPulse .95s ease-in-out infinite}
+#yes.final-duel,#no.final-duel{position:absolute;left:50%;top:0;width:min(220px,calc(100% - 28px));height:54px;padding:0 20px;border-radius:999px;transform:translateX(-50%);transform-style:preserve-3d;backface-visibility:hidden;z-index:30;}
+#yes.final-duel{background:linear-gradient(135deg,#ff4f93,#d91f68);color:#fff;border:0;font-size:15px;font-weight:900;box-shadow:0 12px 34px rgba(217,31,104,.45),0 0 0 8px rgba(255,79,147,.08);animation:duelYesGlow 1s ease-in-out infinite}
+#no.final-duel{background:#fff;color:#9d285b;border:2px solid #d45a87;font-size:14px;font-weight:900;box-shadow:0 8px 24px rgba(140,36,80,.18)}
+#yes.final-duel.duel-show,#no.final-duel.duel-show{animation:duelFlipIn .46s cubic-bezier(.2,.8,.25,1) both}
+#yes.final-duel.duel-hide,#no.final-duel.duel-hide{animation:duelFlipOut .46s cubic-bezier(.6,.1,.8,.2) both;pointer-events:none}
+@keyframes duelFlipIn{0%{opacity:.15;transform:translateX(-50%) perspective(500px) rotateX(90deg) scale(.96)}100%{opacity:1;transform:translateX(-50%) perspective(500px) rotateX(0deg) scale(1)}}
+@keyframes duelFlipOut{0%{opacity:1;transform:translateX(-50%) perspective(500px) rotateX(0deg) scale(1)}100%{opacity:.12;transform:translateX(-50%) perspective(500px) rotateX(-90deg) scale(.96)}}
+@keyframes duelYesGlow{0%,100%{box-shadow:0 10px 28px rgba(217,31,104,.35),0 0 0 0 rgba(255,79,147,.18)}50%{box-shadow:0 14px 36px rgba(217,31,104,.48),0 0 0 8px rgba(255,79,147,.08)}}
+.tease-message{position:absolute;left:50%;top:56%;transform:translate(-50%,-50%) scale(.72);width:min(92%,520px);padding:10px 14px;text-align:center;font-size:clamp(25px,7vw,46px);font-weight:1000;letter-spacing:-.5px;color:#8f2456;text-shadow:0 5px 18px rgba(143,36,86,.16);opacity:0;pointer-events:none;z-index:80;white-space:normal}
+.tease-message.show{animation:teasePop 1.55s cubic-bezier(.18,.8,.25,1) both}
+@keyframes teasePop{0%{opacity:0;transform:translate(-50%,-50%) scale(.58)}28%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}52%{opacity:1;transform:translate(-50%,-50%) scale(1)}82%{opacity:.98;transform:translate(-50%,-50%) scale(1.02)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.08)}}
+.yahoo-message{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.3) rotate(-8deg);font-size:clamp(30px,8vw,58px);font-weight:1000;letter-spacing:-.8px;color:#fff;text-shadow:0 5px 25px rgba(255,49,128,.8),0 0 35px rgba(255,255,255,.25);z-index:9999;pointer-events:none;animation:yahooPop 2.1s cubic-bezier(.18,.9,.28,1) both;text-align:center;white-space:normal;width:min(92vw,720px);padding:16px 22px;box-sizing:border-box}
+@keyframes yahooPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.25) rotate(-10deg)}28%{opacity:1;transform:translate(-50%,-50%) scale(1.22) rotate(4deg)}52%{transform:translate(-50%,-50%) scale(1) rotate(-2deg)}78%{opacity:1;transform:translate(-50%,-50%) scale(1.04)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.28) rotate(3deg)}}
+.success{display:none;min-height:310px;padding:35px 18px;align-items:center;justify-content:center;flex-direction:column}
+.success .heart{font-size:48px;margin-bottom:8px}
+.success h1{font-size:clamp(30px,8vw,42px);margin:0 0 20px;line-height:1.12}
+.success-message{font-size:19px;line-height:1.55}
+.success-message strong{font-size:22px}
+.small{margin-top:18px;font-size:16px;opacity:.82}
+.float-heart{position:fixed;bottom:-30px;font-size:24px;pointer-events:none;z-index:100;animation:rise 4s linear forwards}
+@keyframes rise{to{transform:translateY(-115svh) rotate(25deg);opacity:0}}
+@media(max-width:430px){
+ body{padding:0}
+ .card{width:100vw;max-width:none;min-height:100svh;height:100svh;padding:clamp(18px,4.5svh,34px) 12px 16px;border-radius:0}
+ .heart{font-size:35px}
+ h1{font-size:clamp(26px,7.2vw,33px);margin-bottom:13px}
+ .details,.message{font-size:15.5px}.message{margin:0 auto 13px}.question{font-size:21px;margin-bottom:10px}
+ .interactive-zone{height:clamp(350px,52svh,500px)}
+ .play-area{left:0;right:0;top:0;bottom:0;height:auto}
+ #yes{width:max-content;max-width:calc(100% - 24px);height:48px;font-size:15px;padding:0 20px}
+ #no{top:0;height:42px;font-size:13.5px;padding:0 14px}
+ #no.final-yes{font-size:15px;padding:0 20px}
+ .success{min-height:290px;padding:30px 14px}.success h1{font-size:clamp(29px,8vw,36px)}.success-message{font-size:17px}.success-message strong{font-size:20px}
+}
+
+@media(max-height:700px){
+ .card{padding-top:14px;padding-bottom:12px}
+ .heart{font-size:30px;margin-bottom:4px}
+ h1{margin-bottom:9px}
+ .details{font-size:15px;line-height:1.35;margin-bottom:7px}
+ .message{font-size:14px;margin-bottom:9px}
+ .question{font-size:19px;margin-bottom:7px}
+ .interactive-zone{height:clamp(275px,40svh,340px)}
+}
+</style>
+</head>
+<body>
+<section class="card" id="invite">
+  <div class="heart">💕</div>
+  <h1>Hey, Nutty…<br>This Saturday.<br>You and me. A date.</h1>
+  <div class="details">📅 <strong>12 September</strong><br>⏰ <strong>5:30 PM</strong></div>
+  <div class="interactive-zone" id="interactiveZone">
+    <div class="message"><strong>Just show up.<br>The rest… I’ve got you. 😏❤️</strong></div>
+    <div class="question">So… are you in? 👀💕</div>
+    <div class="play-area" id="playArea">
+    <button id="yes">❤️ YES, I’M IN</button>
+    <button id="no">🫣 NO, I’M SHY</button>
+    <div class="tease-message" id="teaseMessage" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<section class="card success" id="success">
+  <div class="heart">🥰</div>
+  <h1>I knew it, Nutty. ❤️</h1>
+  <div class="success-message"><strong>Get ready, beautiful.</strong><br><br>Saturday · 5:30 PM<br>The rest… I’ve got you. 😉</div>
+  <div class="small">See you then. 💕</div>
+</section>
+
+<script>
+(() => {
+  const invite=document.getElementById('invite');
+  const success=document.getElementById('success');
+  const play=document.getElementById('playArea');
+  const yes=document.getElementById('yes');
+  const no=document.getElementById('no');
+  const question=document.querySelector('.question');
+  let clicks=0, busy=false, teaseTimer=null, moveTimer=null;
+  let lastMove={x:null,y:null};
+  const teasers={3:'Nice try 😏',6:'Make me work for it? 😂',9:'Okay… last chance. ❤️'};
+
+  function clearTease(){
+    clearTimeout(teaseTimer);
+    teaseTimer=null;
+    const msg=document.getElementById('teaseMessage');
+    if(msg) msg.classList.remove('show');
+    no.style.opacity='1';
+    no.style.pointerEvents='auto';
+    if(!no.classList.contains('final-yes')) no.textContent='🫣 NO, I’M SHY';
+  }
+  function rect(el){return el.getBoundingClientRect()}
+  function overlap(a,b){return a.left<b.right&&a.right>b.left&&a.top<b.bottom&&a.bottom>b.top}
+
+  function popButton(){
+    no.classList.remove('pop');
+    void no.offsetWidth;
+    no.classList.add('pop');
+  }
+
+  function sizeNo(){
+    no.style.width='max-content';
+    no.style.height='42px';
+    no.style.minHeight='42px';
+    no.style.padding='0 14px';
+    no.style.maxWidth='calc(100% - 20px)';
+  }
+
+  function placeYes(){
+    const pr=rect(play), qr=rect(question);
+    const gap=12;
+    const top=Math.round(qr.bottom-pr.top+gap);
+    yes.style.top=top+'px';
+    yes.style.left='50%';
+    yes.style.transform='translateX(-50%)';
+  }
+
+  function initialNo(){
+    clearTease();
+    lastMove={x:null,y:null};
+    no.className='';
+    no.textContent='🫣 NO, I’M SHY';
+    no.style.position='absolute';
+    sizeNo();
+    placeYes();
+
+    // Opening state: YES first, NO directly underneath it.
+    const pr=rect(play), yr=rect(yes);
+    const nw=no.offsetWidth;
+    const x=(yr.left-pr.left)+(yr.width-nw)/2;
+    const y=yr.bottom-pr.top+10;
+    no.style.left=Math.round(x+nw/2)+'px';
+    no.style.top=Math.round(y)+'px';
+    no.style.transform='translateX(-50%)';
+  }
+
+  // The chase arena is the large open space BELOW YES. The NO button can
+  // travel across this whole arena, never entering the invitation text above.
+  function moveNoInstant(){
+    clearTease();
+    placeYes();
+    no.className='moving';
+    no.style.opacity='1';
+    no.style.pointerEvents='auto';
+    no.textContent='🫣 NO, I’M SHY';
+    no.style.position='absolute';
+    no.style.transform='none';
+    sizeNo();
+
+    const pw=play.clientWidth, ph=play.clientHeight;
+    const w=no.offsetWidth, h=no.offsetHeight;
+    const pr=rect(play), yr=rect(yes);
+    const padX=10, padY=8, gap=18;
+
+    // The entire lower blank space is the chase arena. It begins below YES
+    // and ends near the bottom of the interactive zone, so the invitation text
+    // above is never used as a movement area.
+    const arenaTop=Math.max(yr.bottom-pr.top+gap, 0);
+    const arenaBottom=Math.max(arenaTop, ph-h-padY);
+    const arenaLeft=padX;
+    const arenaRight=Math.max(arenaLeft, pw-w-padX);
+    const arenaH=Math.max(1, arenaBottom-arenaTop);
+    const arenaW=Math.max(1, arenaRight-arenaLeft);
+
+    // Pick a genuinely random escape point across the whole lower arena.
+    // Keep each escape far enough away to feel like she almost caught it,
+    // while never making it impossible to reach.
+    let x, y, tries=0;
+    const minDistance=Math.max(105, Math.min(210, Math.hypot(arenaW,arenaH)*0.24));
+    do{
+      x=arenaLeft+Math.random()*arenaW;
+      y=arenaTop+Math.random()*arenaH;
+      tries++;
+    }while(lastMove.x!==null && Math.hypot(x-lastMove.x,y-lastMove.y)<minDistance && tries<80);
+
+    lastMove={x,y};
+    no.style.left=Math.round(x)+'px';
+    no.style.top=Math.round(y)+'px';
+    no.style.transform='none';
+    popButton();
+  }
+
+  function moveNo(){
+    clearInterval(moveTimer);
+    moveTimer=null;
+    moveNoInstant();
+  }
+
+  function startChase(){
+    clearInterval(moveTimer);
+    moveTimer=setInterval(()=>{
+      if(clicks>=1 && clicks<9 && !busy) moveNoInstant();
+    },580);
+  }
+
+  function belowYes(){
+    clearTease();
+    lastMove={x:null,y:null};
+    placeYes();
+    no.className='';
+    no.textContent='🫣 NO, I’M SHY';
+    no.style.position='absolute';
+    no.style.transform='translateX(-50%)';
+    sizeNo();
+
+    // Last move: lock NO exactly below YES, centered with the same gap.
+    // Use the YES button's current rendered rectangle so this remains correct
+    // on different phone widths and while the YES pulse is running.
+    const pr=rect(play), yr=rect(yes);
+    const nw=no.offsetWidth;
+    const x=(yr.left-pr.left)+(yr.width-nw)/2;
+    const y=yr.bottom-pr.top+10;
+    no.style.left=Math.round(x+nw/2)+'px';
+    no.style.top=Math.round(y)+'px';
+    no.style.transform='translateX(-50%)';
+    no.classList.add('below-pop');
+  }
+
+  function tease(text, moveAfter=false){
+    if(!text)return;
+    clearTimeout(teaseTimer);
+    teaseTimer=null;
+    no.style.opacity='0';
+    no.style.pointerEvents='none';
+    const msg=document.getElementById('teaseMessage');
+    if(msg){
+      msg.textContent=text;
+      msg.classList.remove('show');
+      void msg.offsetWidth;
+      msg.classList.add('show');
+    }
+    teaseTimer=setTimeout(()=>{
+      if(msg) msg.classList.remove('show');
+      if(no.classList.contains('final-yes')) return;
+      no.style.opacity='1';
+      no.style.pointerEvents='auto';
+      no.textContent='🫣 NO, I’M SHY';
+      if(moveAfter) moveNo();
+    },1550);
+  }
+
+  let duelTimer=null;
+  let duelYesVisible=true;
+
+  function finalYes(){
+    clearTease();
+    clearInterval(moveTimer); moveTimer=null;
+    clearInterval(duelTimer); duelTimer=null;
+
+    // From the 10th attempt onward, YES and NO occupy the exact same place.
+    // They rapidly flip vertically and interchange; clicking either one wins.
+    placeYes();
+    const pr=rect(play), yr=rect(yes);
+    const w=Math.min(220, play.clientWidth-28);
+    const h=54;
+    const top=Math.max(0, Math.round(yr.top-pr.top));
+
+    yes.className='final-duel duel-show';
+    yes.textContent='❤️ YES, I’M IN';
+    yes.style.left='50%';
+    yes.style.top=top+'px';
+    yes.style.width=w+'px';
+    yes.style.height=h+'px';
+    yes.style.transform='translateX(-50%)';
+    yes.style.zIndex='31';
+
+    no.className='final-duel duel-hide';
+    no.textContent='🫣 NO, I’M SHY';
+    no.style.left='50%';
+    no.style.top=top+'px';
+    no.style.width=w+'px';
+    no.style.height=h+'px';
+    no.style.transform='translateX(-50%)';
+    no.style.zIndex='32';
+    no.style.pointerEvents='none';
+
+    duelYesVisible=true;
+    // Slower, readable flip: each face stays visible long enough to catch.
+    duelTimer=setInterval(()=>{
+      duelYesVisible=!duelYesVisible;
+      if(duelYesVisible){
+        yes.style.zIndex='32'; no.style.zIndex='31';
+        yes.style.pointerEvents='auto'; no.style.pointerEvents='none';
+        yes.classList.remove('duel-show','duel-hide');
+        no.classList.remove('duel-show','duel-hide');
+        void yes.offsetWidth; void no.offsetWidth;
+        yes.classList.add('duel-show'); no.classList.add('duel-hide');
+      }else{
+        no.style.zIndex='32'; yes.style.zIndex='31';
+        no.style.pointerEvents='auto'; yes.style.pointerEvents='none';
+        yes.classList.remove('duel-show','duel-hide');
+        no.classList.remove('duel-show','duel-hide');
+        void yes.offsetWidth; void no.offsetWidth;
+        no.classList.add('duel-show'); yes.classList.add('duel-hide');
+      }
+    },680);
+
+    // The original YES is now part of the final rotating pair, so either
+    // visible face leads to the same "Knew you’d say yes" celebration.
+    yes.onclick=()=>finalChoice();
+    no.onclick=()=>finalChoice();
+  }
+
+  function finalChoice(){
+    if(busy)return;
+    busy=true;
+    clearInterval(duelTimer); duelTimer=null;
+    no.style.pointerEvents='none';
+    yes.style.pointerEvents='none';
+
+    const celebration=document.createElement('div');
+    celebration.className='yahoo-message';
+    celebration.textContent='🥰 Knew you’d say yes. ❤️';
+    document.body.appendChild(celebration);
+    setTimeout(()=>{
+      celebration.remove();
+      successScreen();
+    },1900);
+  }
+  function successScreen(){
+    clearTease();
+    yes.remove();no.remove();
+    invite.style.display='none';
+    success.style.display='flex';
+    for(let i=0;i<18;i++)setTimeout(()=>{
+      const h=document.createElement('div');h.className='float-heart';
+      h.textContent=['❤️','💕','💗','💖','🥰'][Math.floor(Math.random()*5)];
+      h.style.left=Math.random()*100+'vw';h.style.animationDuration=(3+Math.random()*2)+'s';
+      document.body.appendChild(h);setTimeout(()=>h.remove(),5500);
+    },i*70);
+    setTimeout(()=>{location.href='https://wa.me/971561561724?text='+encodeURIComponent('Yesss! It’s a date! ❤️ See you Saturday 🥰')},1000);
+  }
+
+  yes.addEventListener('click',()=>{ if(yes.classList.contains('final-duel')) finalChoice(); else successScreen(); });
+  no.addEventListener('click',()=>{
+    if(busy)return;
+
+    // During the final rapid YES/NO flip, either visible choice wins.
+    if(clicks===10 || no.classList.contains('final-duel') || yes.classList.contains('final-duel')){
+      finalChoice();
+      return;
+    }
+
+    busy=true;
+    clearInterval(moveTimer); moveTimer=null;
+    clicks++;
+
+    // The 10th NO click changes this exact button into the only YES button.
+    if(clicks===10){
+      finalYes();
+      busy=false;
+      return;
+    }
+
+    if(clicks===9){
+      // Last chance: pause on the message, then go DIRECTLY into the
+      // final YES/NO flip. Do not respawn the ordinary NO button in between.
+      clearInterval(moveTimer); moveTimer=null;
+      no.style.opacity='0';
+      no.style.pointerEvents='none';
+      const msg=document.getElementById('teaseMessage');
+      if(msg){
+        msg.textContent=teasers[9];
+        msg.classList.remove('show');
+        void msg.offsetWidth;
+        msg.classList.add('show');
+      }
+      clearTimeout(teaseTimer);
+      teaseTimer=setTimeout(()=>{
+        if(clicks===9){
+          if(msg) msg.classList.remove('show');
+          clicks=10;
+          no.style.opacity='1';
+          no.style.pointerEvents='auto';
+          finalYes();
+        }
+      },1500);
+    }else{
+      if(clicks===3 || clicks===6){
+        // Give the tease its own centered moment; then respawn NO at a new escape point.
+        clearInterval(moveTimer); moveTimer=null;
+        tease(teasers[clicks], true);
+        setTimeout(()=>{ if(clicks===3 || clicks===6) startChase(); },1600);
+      }else{
+        moveNo();
+      }
+      // From the first escape onward the button also makes automatic getaways.
+      if(clicks===1) startChase();
+    }
+    setTimeout(()=>busy=false,360);
+  });
+
+  window.addEventListener('resize',()=>{
+    if(clicks===0) initialNo();
+    else if(clicks===9) belowYes();
+    else if(clicks>=1 && clicks<9 && !busy) moveNoInstant();
+    else if(clicks===10 && yes.classList.contains('final-duel')){ placeYes(); const pr=rect(play), yr=rect(yes); const w=Math.min(220,play.clientWidth-28); const top=Math.max(0,Math.round(yr.top-pr.top)); [yes,no].forEach(b=>{b.style.left='50%';b.style.top=top+'px';b.style.width=w+'px';}); }
+  });
+
+  initialNo();
+})();
+
+    // Soft background music: starts after the first user interaction (mobile autoplay-safe).
+    const musicToggle = document.getElementById('musicToggle');
+    let musicStarted = false;
+    function startMusic(){
+      if(musicStarted) return;
+      musicStarted = true;
+      bgMusic.volume = 0.24;
+      const p = bgMusic.play();
+      if(p && p.catch) p.catch(()=>{ musicStarted=false; });
+    }
+    ['pointerdown','touchstart','click'].forEach(evt=>document.addEventListener(evt,startMusic,{once:true,passive:true}));
+    musicToggle.addEventListener('click', e=>{
+      e.stopPropagation();
+      if(bgMusic.paused){ bgMusic.volume=.24; musicToggle.textContent='♫'; musicToggle.setAttribute('aria-label','Pause music'); }
+      else { musicToggle.textContent='🔇'; musicToggle.setAttribute('aria-label','Play music'); }
+    });
+</script>
+
+
+
+<style>.music-toggle{position:fixed;right:14px;bottom:14px;width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.92);color:#d91f68;box-shadow:0 6px 20px rgba(0,0,0,.22);font-size:20px;z-index:50;cursor:pointer}.music-toggle:active{transform:scale(.94)}@media(prefers-reduced-motion:reduce){.music-toggle{transition:none}}</style>
+</body>
+</html>
